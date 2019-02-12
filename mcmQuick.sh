@@ -70,6 +70,9 @@ wget https://mycluster.icp:8443/helm-repo/requiredAssets/ibm-mcm-prod-3.1.2.tgz 
 
 # run the MCM deploy
 echo "deploying MCM chart on ICP hub cluster; please wait a few minutes..."
+echo "expect some output:"
+echo "  Error: Job failed: BackoffLimitExceeded"
+echo "since we do not have Grafana enabled in this stencil"
 helm install ibm-mcm-prod-3.1.2.tgz --name mcm --namespace kube-system --set mcmNamespace=mcm-all --tls
 
 # check the pods status to ensure all are running
