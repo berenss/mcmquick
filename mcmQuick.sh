@@ -41,7 +41,7 @@ if [ -z "${t}" ]; then
     fi
 fi
 echo "target = ${t}"
-MASTER_IP=t
+MASTER_IP=$t
 
 cd ~/Downloads;
 # download linux 'cloudctl' CLI from IBM and install
