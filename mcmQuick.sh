@@ -69,10 +69,19 @@ kubectl create namespace mcm-all
 wget https://mycluster.icp:8443/helm-repo/requiredAssets/ibm-mcm-prod-3.1.2.tgz --no-check-certificate
 
 # run the MCM deploy
-echo "deploying MCM chart on ICP hub cluster; please wait a few minutes..."
-echo "expect some output:"
-echo "  Error: Job failed: BackoffLimitExceeded"
-echo "since we do not have Grafana enabled in this stencil"
+c_echo(){
+    RED="\033[0;31m"
+    GREEN='\033[0;32m'
+    YELLOW='\033[1;33m'
+    NC='\033[0m' # No Color
+
+    printf "${!1}${2} ${NC}\n"
+}
+
+c_echo "RED" "deploying MCM chart on ICP hub cluster; please wait a few minutes..."
+c_echo "RED" "expect some output:"
+c_echo "RED" "  Error: Job failed: BackoffLimitExceeded"
+c_echo "RED" "since we do not have Grafana enabled in this stencil"
 helm install ibm-mcm-prod-3.1.2.tgz --name mcm --namespace kube-system --set mcmNamespace=mcm-all --tls
 
 # check the pods status to ensure all are running
