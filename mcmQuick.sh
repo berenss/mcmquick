@@ -4,16 +4,24 @@
 # Run it on the ICP Master
 # either run as root or as a sub-account with sudo configured for NOPASSWORD prompt
 # usage: ./mcmQuick.sh admin Passw0rd
+c_echo(){
+    RED="\033[0;31m"
+    GREEN='\033[0;32m'
+    YELLOW='\033[1;33m'
+    NC='\033[0m' # No Color
+
+    printf "${!1}${2} ${NC}\n"
+}
 
 if [ $# -eq 0 ]; then
-echo "Usage: $0 user password";
-echo "";
-echo "example, ./mcmQuick.sh admin Passw0rd ";
-echo "";
-echo ".-=all options are required=-.";
-echo "user = admin should do fine";
-echo "password = admin user password, in this stencil is Passw0rd";
-echo "";
+c_echo "GREEN" "Usage: $0 user password";
+c_echo "GREEN" "";
+c_echo "GREEN" "example, ./mcmQuick.sh admin Passw0rd ";
+c_echo "GREEN" "";
+c_echo "GREEN" ".-=all options are required=-.";
+c_echo "GREEN" "user = admin should do fine";
+c_echo "GREEN" "password = admin user password, in this stencil is Passw0rd";
+c_echo "GREEN" "";
 exit 1;
 fi
 
@@ -21,7 +29,7 @@ user=$1
 pass=$2
 
 # Get the OS
-if [ -f /etc/lsb-release ]; then ubuntu=1; echo "ubuntu found"; else rh=1;  echo "redhat found"; fi
+if [ -f /etc/lsb-release ]; then ubuntu=1; c_echo "YELLOW" "ubuntu found"; else rh=1;  c_echo "YELLOW" "redhat found"; fi
 
 # Determine platform architecture
 platform_arch=$(arch); if [ "${platform_arch}" == "x86_64" ] ; then platform_arch="amd64"; fi
@@ -40,7 +48,7 @@ if [ -z "${t}" ]; then
         t=$(ifconfig | awk '/inet /{print $2}' | grep ^9\.)
     fi
 fi
-echo "target = ${t}"
+c_echo "YELLOW" "target = ${t}"
 MASTER_IP=$t
 
 cd ~/Downloads;
@@ -69,15 +77,6 @@ kubectl create namespace mcm-all
 wget https://mycluster.icp:8443/helm-repo/requiredAssets/ibm-mcm-prod-3.1.2.tgz --no-check-certificate
 
 # run the MCM deploy
-c_echo(){
-    RED="\033[0;31m"
-    GREEN='\033[0;32m'
-    YELLOW='\033[1;33m'
-    NC='\033[0m' # No Color
-
-    printf "${!1}${2} ${NC}\n"
-}
-
 c_echo "RED" "deploying MCM chart on ICP hub cluster; please wait a few minutes..."
 c_echo "RED" "expect some output:"
 c_echo "RED" "  Error: Job failed: BackoffLimitExceeded"
